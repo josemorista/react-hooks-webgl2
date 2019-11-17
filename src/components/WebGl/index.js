@@ -17,6 +17,8 @@ module.exports = function (canvasId) {
   shader.useProgram();
   let triangleModel = new Model(triangle.vertices, triangle.indices, []);
   let instance = new ModelInstance()
+  let instance2 = new ModelInstance()
+  instance2.pushParent(instance);
 
   const render = () => {
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
@@ -26,11 +28,18 @@ module.exports = function (canvasId) {
 
     shader.enableAttribute('aVertexPosition');
 
-    instance.updateRotations(1, 1, 1);
-
+    instance.updateRotations(1, 0, 0);
     shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix())
 
     gl.drawElements(gl.TRIANGLES, triangleModel.indexes.length, gl.UNSIGNED_SHORT, 0);
+
+
+    instance2.updateTranslations(0.005, 0, 0);
+
+    shader.enableUMatrix4fv('uModelTransformationMatrix', instance2.getModelTransformationMatrix())
+
+    gl.drawElements(gl.TRIANGLES, triangleModel.indexes.length, gl.UNSIGNED_SHORT, 0);
+
     window.requestAnimationFrame(render)
   }
 

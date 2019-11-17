@@ -101,5 +101,6 @@ module.exports = {
   rotateY,
   rotateZ,
   projectionMatrix,
-  identity: () => identity(4, 4)
+  identity: () => identity(4, 4),
+  multiply
 }

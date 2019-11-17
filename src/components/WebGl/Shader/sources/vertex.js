@@ -7,6 +7,6 @@ module.exports =
   uniform mat4 uModelTransformationMatrix;
 
   void main () {
-    gl_Position = uModelTransformationMatrix * vec4(aVertexPosition, 1.0);
+    gl_Position = vec4(aVertexPosition, 1.0) * uModelTransformationMatrix;
   }
 `
