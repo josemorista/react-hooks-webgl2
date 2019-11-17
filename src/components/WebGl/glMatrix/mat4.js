@@ -1,4 +1,4 @@
-const { identity, multiply } = require('./common');
+const { identity, multiply, transpose, inverse, determinant } = require('./common');
 
 const toRadians = (ang) => {
   return (ang * Math.PI) / 180;
@@ -96,6 +96,9 @@ const projectionMatrix = (fov, ar, near, far) => {
 
 module.exports = {
   translate,
+  transpose,
+  inverse,
+  determinant,
   scale,
   rotateX,
   rotateY,
@@ -104,3 +107,4 @@ module.exports = {
   identity: () => identity(4, 4),
   multiply
 }
+
