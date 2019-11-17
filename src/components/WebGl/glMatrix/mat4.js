@@ -83,12 +83,12 @@ const projectionMatrix = (fov, ar, near, far) => {
 
   m[2][0] = 0.0;
   m[2][1] = 0.0;
-  m[2][2] = (-zNear - zFar) / zRange;
+  m[2][2] = (zNear + zFar) / zRange;
   m[2][3] = (2.0 * zFar * zNear) / zRange;
 
   m[3][0] = 0.0;
   m[3][1] = 0.0;
-  m[3][2] = 1.0;
+  m[3][2] = -1.0;
   m[3][3] = 0.0;
 
   return m;

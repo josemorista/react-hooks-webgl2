@@ -3,12 +3,13 @@ const glc = require('../glContext');
 const gl = glc.getContext();
 
 module.exports = class Shader {
-  constructor() {
+  constructor(vertexSource = 'vertex', fragmentSource = 'fragment') {
 
-    this.vertexSource = require('./sources/vertex');
-    this.fragmentSource = require('./sources/fragment');
+    this.vertexSource = require(`./sources/${vertexSource}`);
+    this.fragmentSource = require(`./sources/${fragmentSource}`);
 
-    console.log(this.vertexSource)
+    console.log(this.vertexSource);
+    console.log(this.fragmentSource);
 
     this.vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(this.vertexShader, this.vertexSource);
@@ -49,7 +50,7 @@ module.exports = class Shader {
   enableUMatrix4fv(name, matrix = [], flatten = true) {
     const uniform = gl.getUniformLocation(this.program, name);
     const m = flatten ? new Float32Array(matrix.flat()) : matrix;
-    gl.uniformMatrix4fv(uniform, false, m);
+    gl.uniformMatrix4fv(uniform, true, m);
   }
 
 }

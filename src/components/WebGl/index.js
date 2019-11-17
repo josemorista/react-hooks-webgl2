@@ -1,44 +1,55 @@
-const glc = require('./glContext')
+const glc = require('./glContext');
 
-module.exports = function (canvasId) {
+const { mat4 } = require('./glMatrix')
+
+module.exports = async function (canvasId) {
   const canvas = document.getElementById(canvasId);
   const gl = canvas.getContext('webgl2');
 
   glc.init(gl);
 
+  const Shader = require('./Shader');
+  const Model = require('./Model');
+  const ModelInstance = require('./Model/ModelInstance');
+  const Camera = require('./Camera');
 
-  const Shader = require('./Shader')
-  const Model = require('./Model')
-  const ModelInstance = require('./Model/ModelInstance')
-  const triangle = require('../../models/triangle')
+  let cube = require('../../models/cube.json');
+
+  let projectionMatrix = [];
+  projectionMatrix = mat4.projectionMatrix(45, gl.canvas.width / gl.canvas.height, 0.1, 100);
 
   const shader = new Shader();
 
   shader.useProgram();
-  let triangleModel = new Model(triangle.vertices, triangle.indices, []);
-  let instance = new ModelInstance()
-  let instance2 = new ModelInstance()
-  instance2.pushParent(instance);
+
+  let cubeModel = new Model(cube.vertices, cube.indices, []);
+  let instance = new ModelInstance(0, 0, -6, 0, 0, 0, 0.5);
+
+  let camera = new Camera(0, 0, 0)
 
   const render = () => {
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearDepth(1.0);
+    gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LEQUAL);
+
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    triangleModel.bindBuffers()
+    cubeModel.bindBuffers();
 
+    instance.updateRotations(1, 1, 1);
     shader.enableAttribute('aVertexPosition');
 
-    instance.updateRotations(1, 0, 0);
-    shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix())
+    camera.updateTranslations(0, 0, 0.01);
 
-    gl.drawElements(gl.TRIANGLES, triangleModel.indexes.length, gl.UNSIGNED_SHORT, 0);
+    shader.enableUMatrix4fv('uViewMatrix', camera.getViewMatrix());
+    shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix());
+    shader.enableUMatrix4fv('uProjectionMatrix', projectionMatrix);
 
-
-    instance2.updateTranslations(0.005, 0, 0);
-
-    shader.enableUMatrix4fv('uModelTransformationMatrix', instance2.getModelTransformationMatrix())
-
-    gl.drawElements(gl.TRIANGLES, triangleModel.indexes.length, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, cubeModel.indexes.length, gl.UNSIGNED_SHORT, 0);
 
     window.requestAnimationFrame(render)
   }
