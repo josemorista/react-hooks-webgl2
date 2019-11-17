@@ -15,36 +15,45 @@ module.exports = class ModelInstance {
 
   pushParent(parent) {
     this.parents.push(parent);
+    this.updateModelTransformationMatrix()
   }
 
   popParent() {
-    return this.parents.pop()
+    const tmp = this.parents.pop();
+    this.updateModelTransformationMatrix();
+    return tmp;
   }
 
   updateRotations(rx, ry, rz) {
-    this.rx += rx;
-    this.ry += ry;
-    this.rz += rz;
+    this.rx = rx;
+    this.ry = ry;
+    this.rz = rz;
     this.updateModelTransformationMatrix()
   }
 
   updateTranslations(x, y, z) {
-    this.x += x;
-    this.y += y;
-    this.z += z;
+    this.x = x;
+    this.y = y;
+    this.z = z;
     this.updateModelTransformationMatrix()
   }
 
   updateScale(sc) {
-    this.sc += sc;
+    this.sc = sc;
   }
 
   getModelTransformationMatrix() {
-    let m = mat4.identity();
-    for (let i = 0; i < this.parents.length; i++) {
-      m = mat4.multiply(m, this.parents[i].getModelTransformationMatrix());
-    }
-    return mat4.multiply(m, this.modelTransformationMatrix);
+    return this.modelTransformationMatrix;
+  }
+
+  getNormalTransformationMatrix() {
+    return this.normalTransformationMatrix;
+  }
+
+  updateNormalTransformationMatrix() {
+    let m = mat4.inverse(this.getModelTransformationMatrix());
+    m = mat4.transpose(m);
+    this.normalTransformationMatrix = m;
   }
 
   updateModelTransformationMatrix() {
@@ -60,7 +69,15 @@ module.exports = class ModelInstance {
 
     m = mat4.scale(m, this.sc);
 
+    let hierarchy = mat4.identity();
+    for (let i = 0; i < this.parents.length; i++) {
+      hierarchy = mat4.multiply(hierarchy, this.parents[i].getModelTransformationMatrix());
+    }
+    m = mat4.multiply(hierarchy, m);
+
     this.modelTransformationMatrix = m;
+
+    this.updateNormalTransformationMatrix();
   }
 
 }

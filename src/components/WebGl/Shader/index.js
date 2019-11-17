@@ -47,6 +47,16 @@ module.exports = class Shader {
     gl.vertexAttribPointer(attribute, 3, gl.FLOAT, false, 0, 0);
   }
 
+  enableUArray3fv(name, array = []) {
+    const uniform = gl.getUniformLocation(this.program, name);
+    gl.uniform3fv(uniform, array);
+  }
+
+  enableU1f(name, value) {
+    const uniform = gl.getUniformLocation(this.program, name);
+    gl.uniform1f(uniform, value);
+  }
+
   enableUMatrix4fv(name, matrix = [], flatten = true) {
     const uniform = gl.getUniformLocation(this.program, name);
     const m = flatten ? new Float32Array(matrix.flat()) : matrix;

@@ -71,9 +71,13 @@ function calculateNormals(vs, ind) {
 }
 
 class Model {
-  constructor(vertices, indexes, normals = []) {
+  constructor(vertices, indexes, normals = [], colors = [], diffuse = [0.8, 0.8, 0.8], specular = [0.4, 0.4, 0.4]) {
     this.vertices = vertices;
     this.indexes = indexes;
+    this.colors = colors;
+
+    this.specular = specular;
+    this.diffuse = diffuse;
 
     if (!normals || normals.length === 0) {
       this.normals = calculateNormals(vertices, indexes);
@@ -81,9 +85,12 @@ class Model {
       this.normals = normals;
     }
 
-    this.vertexBuffer = this.genArrayBuffer(this.vertices);
-    this.indexBuffer = this.genIndexBuffer(this.indexes);
-    this.normalBuffer = this.genArrayBuffer(this.normals);
+    this.buffers = {
+      vertexBuffer: this.genArrayBuffer(this.vertices),
+      indexBuffer: this.genIndexBuffer(this.indexes),
+      normalBuffer: this.genArrayBuffer(this.normals),
+      colorBuffer: this.genArrayBuffer(this.colors)
+    };
   }
 
   genArrayBuffer(data) {
@@ -102,9 +109,12 @@ class Model {
     return indexBuffer;
   }
 
-  bindBuffers() {
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+  bindArrayBuffer(name) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffers[name]);
+  }
+
+  bindIndexBuffer(name) {
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.buffers[name]);
   }
 
 }

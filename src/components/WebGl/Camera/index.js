@@ -11,10 +11,14 @@ module.exports = class Camera {
     this.updateViewMatrix()
   }
 
+  getPosition() {
+    return [this.x, this.y, this.z];
+  }
+
   updateTranslations(x, y, z) {
-    this.x += x;
-    this.y += y;
-    this.z += z;
+    this.x = x;
+    this.y = y;
+    this.z = z;
     this.updateViewMatrix()
   }
 

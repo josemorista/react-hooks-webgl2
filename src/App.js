@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="App">
-      <canvas id="webGlCanvas" width={`${400}px`} height={`${400}px`} />
+      <canvas id="webGlCanvas" width={`${800}px`} height={`${600}px`} />
     </div>
   );
 }

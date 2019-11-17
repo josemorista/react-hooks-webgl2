@@ -12,6 +12,7 @@ module.exports = async function (canvasId) {
   const Model = require('./Model');
   const ModelInstance = require('./Model/ModelInstance');
   const Camera = require('./Camera');
+  const Light = require('./Light');
 
   let cube = require('../../models/cube.json');
 
@@ -26,6 +27,7 @@ module.exports = async function (canvasId) {
   let instance = new ModelInstance(0, 0, -6, 0, 0, 0, 0.5);
 
   let camera = new Camera(0, 0, 0)
+  let light = new Light(0, 0, -1, 1.0, 1.0, 1.0, 0.1);
 
   const render = () => {
 
@@ -35,22 +37,31 @@ module.exports = async function (canvasId) {
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
-
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    cubeModel.bindBuffers();
-
-    instance.updateRotations(1, 1, 1);
+    cubeModel.bindArrayBuffer('vertexBuffer');
     shader.enableAttribute('aVertexPosition');
 
-    camera.updateTranslations(0, 0, 0.01);
+    cubeModel.bindArrayBuffer('normalBuffer');
+    shader.enableAttribute('aVertexNormal');
+
+    instance.updateRotations(instance.rx + 1, instance.ry + 1, instance.rz + 1);
 
     shader.enableUMatrix4fv('uViewMatrix', camera.getViewMatrix());
     shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix());
     shader.enableUMatrix4fv('uProjectionMatrix', projectionMatrix);
+    shader.enableUMatrix4fv('uNormalTransformationMatrix', instance.getNormalTransformationMatrix());
+    shader.enableUArray3fv('uCamPosition', camera.getPosition());
 
+    shader.enableUArray3fv('uLightPosition', light.getPosition());
+    shader.enableUArray3fv('uLightColor', light.getColor());
+    shader.enableU1f('uLightAmbient', light.getAmbient());
+
+    shader.enableUArray3fv('uMaterialDiffuse', cubeModel.diffuse);
+    shader.enableUArray3fv('uMaterialSpecular', cubeModel.specular);
+
+    cubeModel.bindIndexBuffer('indexBuffer');
     gl.drawElements(gl.TRIANGLES, cubeModel.indexes.length, gl.UNSIGNED_SHORT, 0);
-
     window.requestAnimationFrame(render)
   }
 
