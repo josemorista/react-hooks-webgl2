@@ -1,5 +1,5 @@
 module.exports = class Light {
-  constructor(x, y, z, r, g, b, ambient) {
+  constructor(x, y, z, r, g, b, ambient = 1, diffuse = 1, specular = 1) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -7,6 +7,8 @@ module.exports = class Light {
     this.g = g;
     this.b = b;
     this.ambient = ambient;
+    this.diffuse = diffuse;
+    this.specular = specular;
   }
 
   getColor() {
@@ -17,8 +19,16 @@ module.exports = class Light {
     return [this.x, this.y, this.z];
   }
 
-  getAmbient() {
+  getAmbientIntensity() {
     return this.ambient;
+  }
+
+  getSpecularIntensity() {
+    return this.specular;
+  }
+
+  getDiffuseIntensity() {
+    return this.diffuse;
   }
 
 }

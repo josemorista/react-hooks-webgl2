@@ -71,13 +71,15 @@ function calculateNormals(vs, ind) {
 }
 
 class Model {
-  constructor(vertices, indexes, normals = [], colors = [], diffuse = [0.8, 0.8, 0.8], specular = [0.4, 0.4, 0.4]) {
+  constructor(vertices, indexes, normals = [], colors = [], diffuse = [0.8, 0.8, 0.8], specular = [0.4, 0.4, 0.4], ambient = [0.4, 0.4, 0.4], specularPower = 2) {
     this.vertices = vertices;
     this.indexes = indexes;
     this.colors = colors;
 
     this.specular = specular;
     this.diffuse = diffuse;
+    this.ambient = ambient;
+    this.specularPower = specularPower;
 
     if (!normals || normals.length === 0) {
       this.normals = calculateNormals(vertices, indexes);

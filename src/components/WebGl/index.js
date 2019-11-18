@@ -55,8 +55,12 @@ module.exports = async function (canvasId) {
 
     shader.enableUArray3fv('uLightPosition', light.getPosition());
     shader.enableUArray3fv('uLightColor', light.getColor());
-    shader.enableU1f('uLightAmbient', light.getAmbient());
+    shader.enableU1f('uLightSpecularIntensity', light.getSpecularIntensity());
+    shader.enableU1f('uLightAmbientIntensity', light.getAmbientIntensity());
+    shader.enableU1f('uLightDiffuseIntensity', light.getDiffuseIntensity());
 
+    shader.enableU1f('uMaterialSpecularPower', cubeModel.specularPower);
+    shader.enableUArray3fv('uMaterialAmbient', cubeModel.ambient);
     shader.enableUArray3fv('uMaterialDiffuse', cubeModel.diffuse);
     shader.enableUArray3fv('uMaterialSpecular', cubeModel.specular);
 

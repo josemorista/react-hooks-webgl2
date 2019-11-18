@@ -3,7 +3,7 @@ const glc = require('../glContext');
 const gl = glc.getContext();
 
 module.exports = class Shader {
-  constructor(vertexSource = 'vertex', fragmentSource = 'fragment') {
+  constructor(vertexSource = 'vertexPhong', fragmentSource = 'fragmentPhong') {
 
     this.vertexSource = require(`./sources/${vertexSource}`);
     this.fragmentSource = require(`./sources/${fragmentSource}`);
