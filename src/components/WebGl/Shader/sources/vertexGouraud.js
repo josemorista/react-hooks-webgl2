@@ -34,7 +34,7 @@ module.exports = `#version 300 es
 
     vec3 L = normalize(uLightPosition);
     vec3 N = normalize(vNormal);
-    vec3 V = normalize(-eyeVector);
+    vec3 V = normalize(eyeVector);
     vec3 R = reflect(L, N);
 
     float diffuse = clamp(dot(N, -L), 0.0, 1.0);

@@ -46,7 +46,7 @@ module.exports = async function (canvasId) {
     cubeModel.bindArrayBuffer('normalBuffer');
     shader.enableAttribute('aVertexNormal');
 
-    instance.updateRotations(instance.rx + 1, instance.ry + 1, 0);
+    instance.updateRotations(instance.rx + 1, instance.ry + 1, instance.rz + 1);
     shader.enableUMatrix4fv('uViewTransformationMatrix', camera.getViewMatrix());
     shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix());
     shader.enableUMatrix4fv('uProjectionTransformationMatrix', projectionMatrix);

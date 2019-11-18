@@ -22,7 +22,7 @@ module.exports =
 
     vec3 N = normalize(vNormal); 
     vec3 L = normalize(uLightPosition);
-    vec3 V = normalize(-eyeVector);
+    vec3 V = normalize(eyeVector);
 
     // Ambient light
     vec4 Ia = uLightAmbientIntensity * vec4(uMaterialAmbient, 1.0);
