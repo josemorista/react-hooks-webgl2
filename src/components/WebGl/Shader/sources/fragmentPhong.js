@@ -3,7 +3,7 @@ module.exports =
   precision mediump float;
 
   in vec3 eyeVector;
-  in vec3 vNormal;
+  in vec3 normalVector;
 
   uniform vec3 uLightPosition;
   uniform vec3 uLightColor;
@@ -19,23 +19,19 @@ module.exports =
   out vec4 fragColor;
   
   void main () {
-
-    vec3 N = normalize(vNormal); 
+    vec3 N = normalize(normalVector);
     vec3 L = normalize(uLightPosition);
     vec3 V = normalize(eyeVector);
-
-    // Ambient light
-    vec4 Ia = uLightAmbientIntensity * vec4(uMaterialAmbient, 1.0);
-
-    // Diffuse Light
+    
+    vec3 Ia	= uMaterialAmbient * uLightAmbientIntensity;
+  
     float diffuse = clamp(dot(N, -L), 0.0, 1.0);
-    vec4 Id = uLightDiffuseIntensity * vec4(uMaterialDiffuse, 1.0) * vec4(uLightColor, 1.0) * diffuse;
-
-    // Specular Light
-    vec3 R = reflect(-L, N);
+    vec3 Id = diffuse * uMaterialDiffuse * uLightDiffuseIntensity * uLightColor;
+    
+    vec3 R = reflect(L, N);	
     float specular = pow(clamp(dot(R, V), 0.0, 1.0), uMaterialSpecularPower);
-    vec4 Is = uLightSpecularIntensity * vec4(uMaterialSpecular, 1.0) * specular;
-
-    fragColor = (Ia + Id + Is);
+    vec3 Is = uMaterialSpecular * uLightSpecularIntensity * specular;
+    
+    fragColor = vec4((Ia + Id + Is), 1.0);
   }
 `
