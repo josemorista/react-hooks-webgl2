@@ -63,10 +63,34 @@ const rotateZ = (m, ang) => {
   return multiply(m, rz);
 };
 
-const projectionMatrix = (fov, ar, near, far) => {
-  const zNear = near
-  const zFar = far;
-  const zRange = zNear - zFar;
+const projectionMatrixByBounds = (left, right, bottom, top, near, far) => {
+  let m = [[], [], [], []];
+
+  m[0][0] = 2.0 / (right - left);
+  m[0][1] = 0;
+  m[0][2] = 0;
+  m[0][3] = -(left + right) / (right - left);
+
+  m[1][0] = 0;
+  m[1][1] = 2.0 / (top - bottom);
+  m[1][2] = 0;
+  m[1][3] = - (top + bottom)(top - bottom);
+
+  m[2][0] = 0;
+  m[2][1] = 0;
+  m[2][2] = -2.0 / (far - near);
+  m[2][3] = - (far + near) / (far - near);
+
+  m[3][0] = 0.0;
+  m[3][1] = 0.0;
+  m[3][2] = 0.0;
+  m[3][3] = 1.0;
+
+  return m;
+}
+
+const projectionMatrixByFov = (fov, ar, near, far) => {
+  const zRange = near - far;
   const tanHalfFOV = Math.tan(toRadians(fov / 2.0));
 
   let m = [[], [], [], []]
@@ -83,8 +107,8 @@ const projectionMatrix = (fov, ar, near, far) => {
 
   m[2][0] = 0.0;
   m[2][1] = 0.0;
-  m[2][2] = (zNear + zFar) / zRange;
-  m[2][3] = (2.0 * zFar * zNear) / zRange;
+  m[2][2] = (near + far) / zRange;
+  m[2][3] = (2.0 * far * near) / zRange;
 
   m[3][0] = 0.0;
   m[3][1] = 0.0;
@@ -103,7 +127,8 @@ module.exports = {
   rotateX,
   rotateY,
   rotateZ,
-  projectionMatrix,
+  projectionMatrixByBounds,
+  projectionMatrix: projectionMatrixByFov,
   identity: () => identity(4, 4),
   multiply
 }
