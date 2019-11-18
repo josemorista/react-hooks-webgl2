@@ -66,25 +66,25 @@ const rotateZ = (m, ang) => {
 const projectionMatrixByBounds = (left, right, bottom, top, near, far) => {
   let m = [[], [], [], []];
 
-  m[0][0] = 2.0 / (right - left);
+  m[0][0] = (2.0 * near) / (right - left);
   m[0][1] = 0;
-  m[0][2] = 0;
-  m[0][3] = -(left + right) / (right - left);
+  m[0][2] = (left + right) / (right - left);
+  m[0][3] = 0;
 
   m[1][0] = 0;
-  m[1][1] = 2.0 / (top - bottom);
-  m[1][2] = 0;
-  m[1][3] = - (top + bottom)(top - bottom);
+  m[1][1] = (2.0 * near) / (top - bottom);
+  m[1][2] = (top + bottom)(top - bottom);
+  m[1][3] = 0;
 
   m[2][0] = 0;
   m[2][1] = 0;
-  m[2][2] = -2.0 / (far - near);
-  m[2][3] = - (far + near) / (far - near);
+  m[2][2] = (far + near) / (near - far);
+  m[2][3] = (2.0 * far * near) / (near - far);
 
   m[3][0] = 0.0;
   m[3][1] = 0.0;
-  m[3][2] = 0.0;
-  m[3][3] = 1.0;
+  m[3][2] = -1.0;
+  m[3][3] = 0.0;
 
   return m;
 }
