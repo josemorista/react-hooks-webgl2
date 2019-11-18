@@ -19,7 +19,8 @@ module.exports = async function (canvasId) {
   let projectionMatrix = [];
   projectionMatrix = mat4.projectionMatrix(45, gl.canvas.width / gl.canvas.height, 0.1, 100);
 
-  const shader = new Shader();
+  // const shader = new Shader('vertexGouraud', 'fragmentGouraud'); // Gouraud Shading
+  const shader = new Shader(); // Phong Shading
 
   shader.useProgram();
 
@@ -45,11 +46,10 @@ module.exports = async function (canvasId) {
     cubeModel.bindArrayBuffer('normalBuffer');
     shader.enableAttribute('aVertexNormal');
 
-    instance.updateRotations(instance.rx + 1, instance.ry + 1, instance.rz + 1);
-
-    shader.enableUMatrix4fv('uViewMatrix', camera.getViewMatrix());
+    instance.updateRotations(instance.rx + 1, instance.ry + 1, 0);
+    shader.enableUMatrix4fv('uViewTransformationMatrix', camera.getViewMatrix());
     shader.enableUMatrix4fv('uModelTransformationMatrix', instance.getModelTransformationMatrix());
-    shader.enableUMatrix4fv('uProjectionMatrix', projectionMatrix);
+    shader.enableUMatrix4fv('uProjectionTransformationMatrix', projectionMatrix);
     shader.enableUMatrix4fv('uNormalTransformationMatrix', instance.getNormalTransformationMatrix());
     shader.enableUArray3fv('uCamPosition', camera.getPosition());
 

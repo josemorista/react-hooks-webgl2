@@ -26,6 +26,13 @@ module.exports = class Camera {
     return this.viewMatrix;
   }
 
+  updateRotations(rx, ry, rz) {
+    this.rx = rx;
+    this.ry = ry;
+    this.rz = rz;
+    this.updateViewMatrix()
+  }
+
   updateViewMatrix() {
     let m = mat4.identity();
 
