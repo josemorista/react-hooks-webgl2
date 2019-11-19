@@ -30,6 +30,8 @@ module.exports = async function (canvasId) {
   let camera = new Camera(0, 0, 0)
   let light = new Light(0, 0, -1, 1.0, 1.0, 1.0, 0.1);
 
+  instance.setCamera(camera);
+
   const render = () => {
 
     gl.viewport(0, 0, canvas.width, canvas.height);

@@ -10,6 +10,7 @@ module.exports = class ModelInstance {
     this.rz = rz;
     this.sc = sc;
     this.parents = []
+    this.camera = null;
     this.updateModelTransformationMatrix()
   }
 
@@ -22,6 +23,10 @@ module.exports = class ModelInstance {
     const tmp = this.parents.pop();
     this.updateModelTransformationMatrix();
     return tmp;
+  }
+
+  setCamera(camera) {
+    this.camera = camera;
   }
 
   updateRotations(rx, ry, rz) {
@@ -42,6 +47,13 @@ module.exports = class ModelInstance {
     this.sc = sc;
   }
 
+  getModelViewTransformationMatrix() {
+    if (this.camera) {
+      return mat4.multiply(this.camera.getViewMatrix(), this.getModelTransformationMatrix());
+    }
+    return this.getModelTransformationMatrix();
+  }
+
   getModelTransformationMatrix() {
     return this.modelTransformationMatrix;
   }
@@ -51,7 +63,7 @@ module.exports = class ModelInstance {
   }
 
   updateNormalTransformationMatrix() {
-    let m = mat4.inverse(this.getModelTransformationMatrix());
+    let m = mat4.inverse(this.getModelViewTransformationMatrix());
     m = mat4.transpose(m);
     this.normalTransformationMatrix = m;
   }
