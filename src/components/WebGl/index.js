@@ -19,7 +19,7 @@ module.exports = async function (canvasId) {
   let projectionMatrix = [];
   projectionMatrix = mat4.projectionMatrix(45, gl.canvas.width / gl.canvas.height, 0.1, 100);
 
-  const shader = new Shader('vertexPhong', 'fragmentToon'); // Phong Shading
+  const shader = new Shader('vertexToon', 'fragmentToon');
 
   shader.useProgram();
 
