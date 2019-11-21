@@ -14,12 +14,12 @@ module.exports = class ModelInstance {
     this.updateModelTransformationMatrix()
   }
 
-  pushParent(parent) {
+  addParent(parent) {
     this.parents.push(parent);
     this.updateModelTransformationMatrix()
   }
 
-  popParent() {
+  removeParent() {
     const tmp = this.parents.pop();
     this.updateModelTransformationMatrix();
     return tmp;
@@ -30,16 +30,16 @@ module.exports = class ModelInstance {
   }
 
   updateRotations(rx, ry, rz) {
-    this.rx = rx;
-    this.ry = ry;
-    this.rz = rz;
+    this.rx += rx;
+    this.ry += ry;
+    this.rz += rz;
     this.updateModelTransformationMatrix()
   }
 
   updateTranslations(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.x += x;
+    this.y += y;
+    this.z += z;
     this.updateModelTransformationMatrix()
   }
 
@@ -71,8 +71,6 @@ module.exports = class ModelInstance {
   updateModelTransformationMatrix() {
     let m = mat4.identity();
 
-    m = mat4.translate(m, [this.x, this.y, this.z]);
-
     m = mat4.rotateX(m, this.rx);
 
     m = mat4.rotateY(m, this.ry);
@@ -80,6 +78,8 @@ module.exports = class ModelInstance {
     m = mat4.rotateZ(m, this.rz);
 
     m = mat4.scale(m, this.sc);
+
+    m = mat4.translate(m, [this.x, this.y, this.z]);
 
     let hierarchy = mat4.identity();
     for (let i = 0; i < this.parents.length; i++) {

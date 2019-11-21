@@ -1,25 +1,24 @@
 
 module.exports =
   `#version 300 es
+
   precision mediump float;
   
   in vec3 aVertexPosition;
   in vec3 aVertexNormal;
-
-  uniform mat4 uViewTransformationMatrix;
-  uniform mat4 uModelTransformationMatrix;
+  
+  uniform mat4 uModelViewTransformationMatrix;
   uniform mat4 uProjectionTransformationMatrix;
   uniform mat4 uNormalTransformationMatrix;
   
-  uniform vec3 uCamPosition;
-
-  out vec3 normalVector;
-  out vec3 eyeVector;
-
+  out vec3 fragPos;
+  out vec3 fragNormal;
+  
   void main () {
-    normalVector = (uNormalTransformationMatrix * vec4(aVertexNormal, 1.0)).xyz;
-    vec4 worldPosition = uModelTransformationMatrix * vec4(aVertexPosition, 1.0);
-    gl_Position = uProjectionTransformationMatrix * uViewTransformationMatrix * worldPosition;
-    eyeVector = (vec4(uCamPosition, 1.0) - worldPosition).xyz;
+    fragPos = (uModelViewTransformationMatrix * vec4(aVertexPosition, 1.0)).xyz;
+    fragNormal = (uNormalTransformationMatrix * vec4(aVertexNormal, 1.0)).xyz;
+  
+    gl_Position = uProjectionTransformationMatrix * uModelViewTransformationMatrix * vec4(aVertexPosition, 1.0);
   }
+  
 `
