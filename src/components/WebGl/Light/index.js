@@ -1,5 +1,5 @@
 module.exports = class Light {
-  constructor(x, y, z, r, g, b, ambient = 1, diffuse = 1, specular = 0) {
+  constructor(x, y, z, r, g, b, ambient = 1, diffuse = 1, specular = 1) {
     this.x = x;
     this.y = y;
     this.z = z;

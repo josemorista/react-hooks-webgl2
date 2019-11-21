@@ -23,7 +23,7 @@ module.exports = async function (canvasId) {
 
   shader.useProgram();
 
-  let model = new Model(modelData.vertices, modelData.indices);
+  let model = new Model(modelData.vertices, modelData.indices, modelData.normals);
   let center = getCenter(model);
   let instance = new ModelInstance(0, 0, 0, 0, 0, 0, 1);
 

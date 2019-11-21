@@ -21,7 +21,7 @@ void main()
 {
   vec3 N = normalize(fragNormal);
   vec3 V = normalize(-fragPos);
-  vec3 vertexToLightSource = uLightPosition - fragPos;
+  vec3 vertexToLightSource = fragPos- uLightPosition;
   float distance = length(vertexToLightSource);
   float attenuation = 1.0 / distance; // linear attenuation
   vec3 lightDirection = normalize(vertexToLightSource);
@@ -33,13 +33,13 @@ void main()
   vec3 fragmentColor = vec3(uLightColor) * vec3(uMaterialDiffuse) * uLightDiffuseIntensity;
 
   // Outline
-  if (dot(V, N) < mix(0.4, 0.4, max(0.0, dot(N, lightDirection)))) {
+  if (dot(V, N) < mix(0.4, 0.4, max(0.0, dot(N, -lightDirection)))) {
     fragmentColor = fragmentColor * vec3(uLightColor) * vec3(0,0,0);
   }
 
   // HighLights
-  if (dot(lightDirection, N) > 0.0 && attenuation * pow(max(0.0, dot(reflect(-lightDirection, N), V)), uMaterialSpecularPower) >= 0.6) {
-    fragmentColor = uLightColor * uLightSpecularIntensity * uMaterialSpecular * fragmentColor;
+  if (dot(-lightDirection, N) > 0.0 && attenuation * pow(max(0.0, dot(reflect(lightDirection, N), V)), uMaterialSpecularPower) > 0.5) {
+    fragmentColor = uLightSpecularIntensity * vec3(0.8) * fragmentColor;
   }
 
   fragColor = vec4(Ia + fragmentColor, 1.0);
