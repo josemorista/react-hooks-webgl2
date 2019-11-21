@@ -41,9 +41,9 @@ module.exports = async function (canvasId) {
     gl.depthFunc(gl.LEQUAL);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    /*instance.updateTranslations(center[0], center[1], center[2]);
-    instance.updateRotations(0, 1, 0);
-    instance.updateTranslations(-center[0], -center[1], -center[2]);*/
+    instance.updateTranslations(center[0], center[1], center[2]);
+    //instance.updateRotations(0, 1, 0);
+    instance.updateTranslations(-center[0], -center[1], -center[2]);
 
     model.bindArrayBuffer('vertexBuffer');
     shader.enableAttribute('aVertexPosition');
