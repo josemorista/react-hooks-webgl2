@@ -26,7 +26,7 @@ void main()
 
   vec3 fragmentColor = vec3(1, 1, 1);
   
-  if (dot(V, N) < mix(0.085, 0.8, max(0.0, dot(N, lightDirection)))) {
+  if (dot(V, N) < mix(0.088, 0.8, max(0.0, dot(N, lightDirection)))) {
     fragmentColor = fragmentColor * vec3(uLightColor) * vec3(0,0,0);
   }
 
