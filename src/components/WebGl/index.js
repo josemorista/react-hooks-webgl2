@@ -15,11 +15,12 @@ module.exports = async function (canvasId) {
   const Light = require('./Light');
   const { normalize, getCenter } = require('../../models');
   let modelData = normalize(require('../../models/laurana.json'));
+  //  let modelData = normalize(require('../../models/ball.json'));
 
   let projectionMatrix = [];
   projectionMatrix = mat4.projectionMatrix(45, gl.canvas.width / gl.canvas.height, 0.1, 100);
 
-  const shader = new Shader('vertexPhong', 'fragmentPhong');
+  const shader = new Shader('vertexPhong', 'fragmentHatch');
 
   shader.useProgram();
 

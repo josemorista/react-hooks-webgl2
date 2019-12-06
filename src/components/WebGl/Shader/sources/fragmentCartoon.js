@@ -25,7 +25,7 @@ void main()
   // Diffuse Lighting
   vec3 fragmentColor = vec3(uLightColor) * vec3(uMaterialDiffuse) * uLightDiffuseIntensity;
   // Outline
-  if (dot(V, N) < mix(0.4, 0.4, max(0.0, dot(N, -lightDirection)))) {
+  if (dot(V, N) < mix(0.1, 0.4, max(0.0, dot(N, -lightDirection)))) {
     fragmentColor = fragmentColor * vec3(uLightColor) * vec3(0,0,0);
   }
   // HighLights

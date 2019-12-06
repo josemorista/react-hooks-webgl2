@@ -12,7 +12,7 @@ void main()
   vec3 vertexToLightSource = fragPos - uLightPosition;
   vec3 lightDirection = normalize(vertexToLightSource);
   vec3 fragmentColor = vec3(1, 1, 1);
-  if (dot(V, N) < mix(0.088, 0.8, max(0.0, dot(N, -lightDirection)))) {
+  if (dot(V, N) < mix(0.1, 0.8, max(0.0, dot(N, -lightDirection)))) {
     fragmentColor = fragmentColor * vec3(uLightColor) * vec3(0,0,0);
   }
   fragColor = vec4(fragmentColor, 1.0);

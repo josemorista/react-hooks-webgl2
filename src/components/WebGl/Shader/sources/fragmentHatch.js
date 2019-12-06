@@ -16,27 +16,32 @@ module.exports =
     vec3 L = normalize(fragPos - uLightPosition);
     float df = clamp(dot(N, -L), 0.0, 1.0);
     vec2 pos = gl_FragCoord.xy;
-    // Define the first group of lines
+    
     float lineWidth = 7.0 * (1.0 - smoothstep(0.0, 0.3, df)) + 0.5;
-    float linesSep = 16.0;
-    vec2 grid_pos = vec2(pos.x, mod(pos.y, linesSep));
-    float line_1 = horizontalLine(grid_pos, linesSep / 2.0, lineWidth);
-    grid_pos.y = mod(pos.y + linesSep / 2.0, linesSep);
-    float line_2 = horizontalLine(grid_pos, linesSep / 2.0, lineWidth);
-    // Rotate the coordinates
+
     pos = rotate(radians(10.0)) * pos;
-    // Define the group of lines
-    linesSep = 10.0;
+    float linesSep = 5.0;
+    vec2 grid_pos = vec2(pos.x, mod(pos.y, linesSep));
+    float line_1 = horizontalLine(grid_pos, linesSep, lineWidth);
+    grid_pos.y = mod(pos.y + linesSep, linesSep);
+    
+    linesSep = 7.0;
+    pos = rotate(radians(50.0)) * pos;
     grid_pos = vec2(pos.x, mod(pos.y, linesSep));
-    float line_3 = horizontalLine(grid_pos, linesSep / 2.0, lineWidth);
-    grid_pos.y = mod(pos.y + linesSep / 2.0, linesSep);
-    float line_4 = horizontalLine(grid_pos, linesSep / 2.0, lineWidth);
+    float line_2 = horizontalLine(grid_pos, linesSep, lineWidth);
+
+    linesSep = 8.0;
+    pos = rotate(radians(90.0)) * pos;
+    grid_pos = vec2(pos.x, mod(pos.y, linesSep));
+    float line_3 = horizontalLine(grid_pos, linesSep, lineWidth);
+    
+    
     float color = 1.0;
-    color -= 0.8 * line_1 * (1.0 - smoothstep(0.5, 0.75, df));
-    color -= 0.8 * line_2 * (1.0 - smoothstep(0.4, 0.5, df));
-    color -= 0.8 * line_3 * (1.0 - smoothstep(0.4, 0.65, df));
-    color -= 0.8 * line_4 * (1.0 - smoothstep(0.2, 0.4, df));
-    color = clamp(color, 0.05, 1.0);
+    color -= line_1 * (1.0 - smoothstep(0.0, 0.3, df));
+    color -= line_2 * (1.0 - smoothstep(0.3, 0.6, df));
+    color -= line_3 * (1.0 - smoothstep(0.6, 0.9, df));
+    
+    color = clamp(color, 0.1, 1.0);
     fragColor = vec4(vec3(color), 1.0);
   }
 `
