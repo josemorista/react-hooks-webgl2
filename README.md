@@ -1,3 +1,7 @@
+##
+
+Real time rendering using React and WebGl2, lighting models using with Phong, Gourad and non-photorealistic rendering shaders.
+
 ## Available Scripts
 
 In the project directory, you can run:
